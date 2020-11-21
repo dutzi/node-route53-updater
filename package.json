@@ -1,32 +1,36 @@
 {
-	"name": "route53-updater",
-	"version": "1.0.1",
-	"description": "Updating a Route53 resource set with meta-data of EC2 instance",
-	"keywords": ["Route53", "AWS"],
-	"main": "index.js",
-	"scripts": {
-		"test": "make test"
-	},
-	"author": "Michael Wittig <michael@widdix.de>",
-	"license": "MIT",
-	"dependencies": {
-		"assert-plus": "1.0.0",
-		"aws-sdk": "2.4.1",
-		"async": "1.5.2",
-		"underscore": "1.8.3",
-		"minimist": "1.2.0"
-	},
-	"devDependencies": {
-		"jshint": "2.9.2",
-		"madge": "0.5.4",
-		"npmedge": "0.2.2",
-		"istanbul": "0.4.4"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/widdix/node-route53-updater.git"
-	},
-	"bin" : {
-		"route53-updater": "./cli.js"
-	}
+  "name": "route53-noip",
+  "version": "1.0.1",
+  "description": "Updating a Route53 resource set with meta-data of EC2 instance or local ip",
+  "keywords": [
+    "Route53",
+    "AWS"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "author": "dutzi",
+  "license": "MIT",
+  "dependencies": {
+    "assert-plus": "1.0.0",
+    "async": "1.5.2",
+    "aws-sdk": "2.4.1",
+    "minimist": "1.2.0",
+    "public-ip": "^4.0.2",
+    "underscore": "1.8.3"
+  },
+  "devDependencies": {
+    "jshint": "2.9.2",
+    "madge": "0.5.4",
+    "npmedge": "0.2.2",
+    "istanbul": "0.4.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/widdix/node-route53-updater.git"
+  },
+  "bin": {
+    "route53-updater": "./cli.js"
+  }
 }

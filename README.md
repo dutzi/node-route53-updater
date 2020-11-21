@@ -2,9 +2,19 @@
 [![NPM version](https://badge.fury.io/js/route53-updater.png)](http://badge.fury.io/js/route53-updater)
 [![NPM dependencies](https://david-dm.org/widdix/node-route53-updater.png)](https://david-dm.org/widdix/node-route53-updater)
 
-# route53-updater
+# route53-noip
 
-The `route53-updater` module can update a Route 53 Record Set with the current IP or hostname of an machine. This can be useful if you have a single instance running in an auto scaling group. During startup of the EC2 instance you call the `route53-updater` to update the DNS entry to the new IP.  
+This package is based on [route53-updater](https://github.com/ToneB30/node-route53-updater). The only thing added is the option to resolve the machine's public IP Address.
+
+Usage:
+
+```sh
+node cli.js --action UPDATE --hostedZoneName example.com. --recordSetName my.example.com. --public-ip --type A
+```
+
+Below is route53-updater's readme.
+
+The `route53-updater` module can update a Route 53 Record Set with the current IP or hostname of an machine. This can be useful if you have a single instance running in an auto scaling group. During startup of the EC2 instance you call the `route53-updater` to update the DNS entry to the new IP.
 
 Port of https://github.com/taimos/route53-updater/
 
@@ -12,58 +22,57 @@ Port of https://github.com/taimos/route53-updater/
 
 Install route53-updater globally
 
-	npm install route53-updater -g
+    npm install route53-updater -g
 
 Create or update the DNS CNAME entry for test.yourdomain.com to point to the public hostname of the EC2 instance
 
-	route53-updater --action UPDATE --hostedZoneName yourdomain.com. --recordSetName test.yourdomain.com. 
+    route53-updater --action UPDATE --hostedZoneName yourdomain.com. --recordSetName test.yourdomain.com.
 
 or
 
-	route53-updater --action UPDATE --hostedZoneId XXXXXXXXXXXXX --recordSetName test.yourdomain.com. 
+    route53-updater --action UPDATE --hostedZoneId XXXXXXXXXXXXX --recordSetName test.yourdomain.com.
 
 The assumed defaults are
 
-	route53-updater --action UPDATE --hostedZoneName yourdomain.com. --recordSetName test.yourdomain.com. --ttl 60 --metadata public-hostname --type CNAME
+    route53-updater --action UPDATE --hostedZoneName yourdomain.com. --recordSetName test.yourdomain.com. --ttl 60 --metadata public-hostname --type CNAME
 
 By default route53-updater will lookup the IP address against the Amazon Metadata Service. If running outside Amazon, you can use the first IPv4 address on an interface by specifying an --iface option
 
-	route53-updater --action UPDATE --hostedZoneName yourdomain.com. --recordSetName test.yourdomain.com. --iface eth0
+    route53-updater --action UPDATE --hostedZoneName yourdomain.com. --recordSetName test.yourdomain.com. --iface eth0
 
 The instance running the script needs the following IAM access rights:
 
-	{
-		"Version": "2012-10-17",
-		"Statement": [
-			{
-				"Sid": "Stmt1424083772000",
-				"Effect": "Allow",
-				"Action": [
-					"route53:ChangeResourceRecordSets",
-					"route53:ListHostedZones",
-					"route53:ListResourceRecordSets",
-					"route53:GetChange"
-				],
-				"Resource": [
-					"*"
-				]
-			}
-		]
-	}
+    {
+    	"Version": "2012-10-17",
+    	"Statement": [
+    		{
+    			"Sid": "Stmt1424083772000",
+    			"Effect": "Allow",
+    			"Action": [
+    				"route53:ChangeResourceRecordSets",
+    				"route53:ListHostedZones",
+    				"route53:ListResourceRecordSets",
+    				"route53:GetChange"
+    			],
+    			"Resource": [
+    				"*"
+    			]
+    		}
+    	]
+    }
 
 Supported parameters:
 
-* `action`: String (required)
-	* `UPDATE`: Update the DNS entry (delete if exists, and create)
-	* `DELETE`: Create the DNS entry
-	* `CREATE`: Create the DNS entry or fail if existing
-* `hostedZoneName`: String (either `hostedZoneName` or `hostedZoneId` is required) - Name of your hosted zone (Must end with an dot!)
-* `hostedZoneId`: String (either `hostedZoneName` or `hostedZoneId` is required) - Id of your hosted zone
-* `recordSetName`: String (required) - Name of your record set (XYZ.hostedZoneName)
-* `ttl`: Number (optional, default 60) - TTL in seconds
-* `metadata`: String (optional, default public-hostname) - Metadata field to use as the value (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
-* `type`: String (optional, default CNAME) - Type of record set (http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/ResourceRecordTypes.html)
-
+- `action`: String (required)
+  - `UPDATE`: Update the DNS entry (delete if exists, and create)
+  - `DELETE`: Create the DNS entry
+  - `CREATE`: Create the DNS entry or fail if existing
+- `hostedZoneName`: String (either `hostedZoneName` or `hostedZoneId` is required) - Name of your hosted zone (Must end with an dot!)
+- `hostedZoneId`: String (either `hostedZoneName` or `hostedZoneId` is required) - Id of your hosted zone
+- `recordSetName`: String (required) - Name of your record set (XYZ.hostedZoneName)
+- `ttl`: Number (optional, default 60) - TTL in seconds
+- `metadata`: String (optional, default public-hostname) - Metadata field to use as the value (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
+- `type`: String (optional, default CNAME) - Type of record set (http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/ResourceRecordTypes.html)
 
 ## Breaking changes
 
