@@ -31,6 +31,6 @@
     "url": "https://github.com/widdix/node-route53-updater.git"
   },
   "bin": {
-    "route53-updater": "./cli.js"
+    "route53-noip": "./cli.js"
   }
 }
